@@ -26,9 +26,8 @@ export default function App() {
         <Button color='#C45071' title='Add Tidbit' onPress={addTidbitHandler} />
       </View>
       <View style={styles.tidbitListContainer}>
-        <Text style={styles.testStyle}>{tidbitItem.map( t => 
-          <Text>{t}{`\n`}</Text>
-          )}</Text>
+         { tidbitItem.map((item, index) => <Text style={styles.testStyle} 
+                                          key={index}>{'◆ '}{item}{'\n'}</Text> ) }
       </View>
 
     </View>
@@ -66,6 +65,7 @@ const styles = StyleSheet.create({
     paddingTop: 20
   },
   testStyle: {
-    color: 'white'
+    color: 'white',
+    fontSize: 18
   }
 });
