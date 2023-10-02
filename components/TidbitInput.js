@@ -1,18 +1,30 @@
+import { useState } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import CustomButton from './CustomButton';
 
 function TidbitInput(props) {
-    const { getInput, value, addItem } = props;
+    const { onAddItem } = props;
+    const [enteredTidbitText, setEnteredTidbitText] = useState('');
+   
+    function tidbitInputHandler(enteredText) {
+        console.log(enteredText);
+        setEnteredTidbitText(enteredText);
+      };
+    
+      function addTidbitHandler(){
+        onAddItem(enteredTidbitText);
+        setEnteredTidbitText('');
+      };
 
     return (
         <View style={styles.inputContainer}>
             <TextInput placeholder='What&apos;s your tidbit?'
                 placeholderTextColor='#B7B1AE'
-                value={value}
-                onChangeText={getInput}
+                value={enteredTidbitText}
+                onChangeText={tidbitInputHandler}
                 style={styles.textInput} />
             <CustomButton title='Add Tidbit' color='#C45071'
-                onPress={addItem} />
+                onPress={addTidbitHandler} />
         </View>
     );
 };
