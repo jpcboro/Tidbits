@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Button, FlatList, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import CustomButton from './CustomButton.js';
+import { FlatList, StyleSheet, TextInput, View } from 'react-native';
+import CustomButton from './components/CustomButton.js';
+import TidbitItem from './components/TidbitItem.js';
 
 export default function App() {
-  let textInput;
   const [enteredTidbitText, setEnteredTidbitText] = useState('');
   const [tidbitItems, setTidbitItems] = useState([]);
 
@@ -29,13 +29,7 @@ export default function App() {
       </View>
       <View style={styles.tidbitListContainer}>
         <FlatList data={tidbitItems} renderItem={(tidbitItemData) => {
-          return (
-            <View style={styles.tidbitItemContainer}>
-              <Text style={styles.textStyle} >
-                {tidbitItemData.item.text}
-              </Text>
-            </View>
-          );
+          return <TidbitItem itemText={tidbitItemData.item.text}/>
         }}
           keyExtractor={(item, index) => {
             return item.key
@@ -77,16 +71,4 @@ const styles = StyleSheet.create({
     padding: 5,
     paddingTop: 0
   },
-  tidbitItemContainer: {
-    backgroundColor: '#977BAE',
-    borderRadius: 6,
-    paddingTop: 10,
-    paddingLeft: 10,
-    paddingBottom: 10,
-    marginTop: 10
-  },
-  textStyle: {
-    color: 'white',
-    fontSize: 18,
-  }
 });
