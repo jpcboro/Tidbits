@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, FlatList, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import CustomButton from './CustomButton.js';
 
 export default function App() {
   let textInput;
   const [enteredTidbitText, setEnteredTidbitText] = useState('');
-  const[tidbitItem, setTidbitItem] = useState([]);
+  const [tidbitItems, setTidbitItems] = useState([]);
 
   function tidbitInputHandler(enteredText) {
     console.log(enteredText);
@@ -12,24 +13,35 @@ export default function App() {
   };
 
   function addTidbitHandler() {
-    console.log("entered text is " + enteredTidbitText);
-    setTidbitItem(currentTidbit => [...currentTidbit, enteredTidbitText]);
+    setTidbitItems(currentTidbit => [...currentTidbit,
+    { text: enteredTidbitText, key: Math.random().toString() }]);
+    console.log("entered text is " + JSON.stringify(tidbitItems));
   };
 
   return (
     <View style={styles.appContainer}>
       <View style={styles.inputContainer}>
-        <TextInput placeholder='What&apos;s your tidbit for today?'
+        <TextInput placeholder='What&apos;s your tidbit?'
           placeholderTextColor='#B7B1AE'
           onChangeText={tidbitInputHandler}
           style={styles.textInput} />
-        <Button color='#C45071' title='Add Tidbit' onPress={addTidbitHandler} />
+        <CustomButton title='Add Tidbit' color='#C45071' onPress={addTidbitHandler} />
       </View>
       <View style={styles.tidbitListContainer}>
-         { tidbitItem.map((item, index) => <Text style={styles.testStyle} 
-                                          key={index}>{'◆ '}{item}{'\n'}</Text> ) }
+        <FlatList data={tidbitItems} renderItem={(tidbitItemData) => {
+          return (
+            <View style={styles.tidbitItemContainer}>
+              <Text style={styles.textStyle} >
+                {tidbitItemData.item.text}
+              </Text>
+            </View>
+          );
+        }}
+          keyExtractor={(item, index) => {
+            return item.key
+          }}
+        />
       </View>
-
     </View>
 
   );
@@ -57,15 +69,24 @@ const styles = StyleSheet.create({
     width: '70%',
     color: 'white',
     marginRight: 6,
-    padding: 8
+    padding: 8,
+    fontSize: 18
   },
   tidbitListContainer: {
     flex: 5,
     padding: 5,
-    paddingTop: 20
+    paddingTop: 0
   },
-  testStyle: {
+  tidbitItemContainer: {
+    backgroundColor: '#977BAE',
+    borderRadius: 6,
+    paddingTop: 10,
+    paddingLeft: 10,
+    paddingBottom: 10,
+    marginTop: 10
+  },
+  textStyle: {
     color: 'white',
-    fontSize: 18
+    fontSize: 18,
   }
 });
